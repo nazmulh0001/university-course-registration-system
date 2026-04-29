@@ -80,3 +80,39 @@ class RegistrationSystem:
             student.registered_courses.append(course)
             print(f"Registered: {course.title}")
 
+#Main Program
+def main():
+    system = RegistrationSystem("course_info.csv")
+    student = Student("student_history.csv")
+
+    while True:
+        print("\n1. Show Courses")
+        print("2. Register Course")
+        print("3. View Registered Courses")
+        print("4. Exit")
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            system.show_courses()
+
+        elif choice == "2":
+            code = input("Enter course code: ")
+            system.register_course(student, code)
+
+        elif choice == "3":
+            print("\nYour Courses:")
+            for c in student.registered_courses:
+                print(c)
+            print(f"Total Credits: {student.total_credits()}")
+
+        elif choice == "4":
+            print("Exiting...")
+            break
+
+        else:
+            print("Invalid choice.")
+
+
+if __name__ == "__main__":
+    main()
