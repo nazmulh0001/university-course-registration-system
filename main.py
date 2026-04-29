@@ -56,12 +56,12 @@ class RegistrationSystem:
             print(course)
 
     def can_register(self, student, course):
-        # Check credit limit
+        #credit limit
         if student.total_credits() + course.credits > 15:
             print("❌ Credit limit exceeded (max 15).")
             return False
 
-        # Check prerequisite
+        #prerequisite
         if course.prerequisite.lower() != "none":
             if course.prerequisite not in student.completed_courses:
                 print(f"❌ Missing prerequisite: {course.prerequisite}")
