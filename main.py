@@ -23,7 +23,7 @@ class Student:
             with open(file, 'r') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    completed.add(row['Course Code'])
+                    completed.add(row['Course Code'].strip())
         except FileNotFoundError:
             print("History file not found. Starting fresh.")
         return completed
@@ -45,7 +45,7 @@ class RegistrationSystem:
                     row['Course Code'],
                     row['Course Title'],
                     row['Credits'],
-                    row['Prerequisite']
+                    row['Prerequisite'].strip()
                 )
                 courses[course.code] = course
         return courses
@@ -58,20 +58,20 @@ class RegistrationSystem:
     def can_register(self, student, course):
         #credit limit
         if student.total_credits() + course.credits > 15:
-            print("❌ Credit limit exceeded (max 15).")
+            print("Credit limit exceeded (max 15).")
             return False
 
         #prerequisite
         if course.prerequisite.lower() != "none":
             if course.prerequisite not in student.completed_courses:
-                print(f"❌ Missing prerequisite: {course.prerequisite}")
+                print(f"Missing prerequisite: {course.prerequisite}")
                 return False
 
         return True
 
     def register_course(self, student, course_code):
         if course_code not in self.courses:
-            print("❌ Invalid course code.")
+            print("Invalid course code.")
             return
 
         course = self.courses[course_code]
@@ -86,7 +86,8 @@ def main():
     student = Student("student_history.csv")
 
     while True:
-        print("\n1. Show Courses")
+        print("Hello, Welcome to our course registration system!!")
+        print("\n1. Show All Courses")
         print("2. Register Course")
         print("3. View Registered Courses")
         print("4. Exit")
