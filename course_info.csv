@@ -1,0 +1,26 @@
+Course Code,Course Title,Credits,Prerequisite
+ADS 0613-205,Database Systems,3, none
+ADS 0613-206,Database Systems Lab,1.5, none
+GED 0222-201,History of the Emergence of Bangladesh,2,none
+ADS 0613-211,Applied Probability and Random Processes,3,MAT 0541-201
+ADS 0613-219,Software Engineering,3,none
+ADS 0613-203,Data Structures and Algorithms,3,ADS 0613-111
+ADS 0613-204,Data Structures and Algorithms Lab,1.5,ADS 0613-112
+MAT 0541-201,Probability and Statistics,3, none
+MAT 0613-202,Probability and Statistics Lab using R,1.5, none
+GED 0314-203,Sociology,3, none
+ESP 0231-103,Professional English,2, none
+MAT 0541-105,Linear Algebra,3, none
+ADS 0613-201,Introduction to Data Science,3, none
+MAT 0541-103,Multivariable Calculus,3,MAT 0541-101
+ESP 0231-101,Academic English,3, none
+MAT 0541-103,Multivariable Calculus,3,MAT 0541-101
+ADS 0613-101,Discrete Mathematics,3, none
+GED 0232-103,Functional Bengali,2, none
+ESD 102,Communication and Self-Development,0, none
+MAT 0541-101,Differential and Integral Calculus,3, none
+PHY 0533-101,Physics,3, none
+PHY 0533-102,Physics Lab,1, none
+ADS 0613-100,Introduction to Computational Thinking and Programming,1.5, none
+ESP 0231-009,Remedial English,0, none
+MAT 0541-009,Remedial Math,0, none
