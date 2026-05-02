@@ -1,17 +1,18 @@
 import csv
 
-#Course Class
+# Course Class
 class Course:
     def __init__(self, code, title, credits, prerequisite):
-        self.code = code
-        self.title = title
+        self.code = code.strip().upper()
+        self.title = title.strip()
         self.credits = float(credits)
-        self.prerequisite = prerequisite
+        self.prerequisite = prerequisite.strip().upper() if prerequisite else "NONE"
 
     def __str__(self):
         return f"{self.code} - {self.title} ({self.credits} credits) | Prereq: {self.prerequisite}"
-    
-#Student Class
+
+
+# Student Class
 class Student:
     def __init__(self, history_file):
         self.completed_courses = self.load_history(history_file)
@@ -23,7 +24,7 @@ class Student:
             with open(file, 'r') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    completed.add(row['Course Code'].strip())
+                    completed.add(row['Course Code'].strip().upper())
         except FileNotFoundError:
             print("History file not found. Starting fresh.")
         return completed
@@ -31,23 +32,27 @@ class Student:
     def total_credits(self):
         return sum(course.credits for course in self.registered_courses)
 
-#Registration System
+
+# Registration System
 class RegistrationSystem:
     def __init__(self, course_file):
         self.courses = self.load_courses(course_file)
 
     def load_courses(self, file):
         courses = {}
-        with open(file, 'r') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                course = Course(
-                    row['Course Code'],
-                    row['Course Title'],
-                    row['Credits'],
-                    row['Prerequisite'].strip()
-                )
-                courses[course.code] = course
+        try:
+            with open(file, 'r') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    course = Course(
+                        row['Course Code'],
+                        row['Course Title'],
+                        row['Credits'],
+                        row.get('Prerequisite', "NONE")
+                    )
+                    courses[course.code] = course
+        except FileNotFoundError:
+            print("Course file not found!")
         return courses
 
     def show_courses(self):
@@ -56,13 +61,23 @@ class RegistrationSystem:
             print(course)
 
     def can_register(self, student, course):
-        #credit limit
+        # Prevent duplicate registration
+        if course in student.registered_courses:
+            print("Already registered this course.")
+            return False
+
+        # Prevent re-taking completed course
+        if course.code in student.completed_courses:
+            print("You have already completed this course.")
+            return False
+
+        # Credit limit
         if student.total_credits() + course.credits > 15:
             print("Credit limit exceeded (max 15).")
             return False
 
-        #prerequisite
-        if course.prerequisite.lower() != "none":
+        # Prerequisite check
+        if course.prerequisite != "NONE":
             if course.prerequisite not in student.completed_courses:
                 print(f"Missing prerequisite: {course.prerequisite}")
                 return False
@@ -70,6 +85,8 @@ class RegistrationSystem:
         return True
 
     def register_course(self, student, course_code):
+        course_code = course_code.strip().upper()
+
         if course_code not in self.courses:
             print("Invalid course code.")
             return
@@ -80,19 +97,20 @@ class RegistrationSystem:
             student.registered_courses.append(course)
             print(f"Registered: {course.title}")
 
-#Main Program
+
+# Main Program
 def main():
     system = RegistrationSystem("course_info.csv")
     student = Student("student_history.csv")
 
     while True:
-        print("Hello, Welcome to our course registration system!!")
-        print("\n1. Show All Courses")
+        print("\nHello, Welcome to our course registration system!!")
+        print("1. Show All Courses")
         print("2. Register Course")
         print("3. View Registered Courses")
         print("4. Exit")
 
-        choice = input("Enter choice: ")
+        choice = input("Enter choice: ").strip()
 
         if choice == "1":
             system.show_courses()
@@ -103,12 +121,15 @@ def main():
 
         elif choice == "3":
             print("\nYour Courses:")
-            for c in student.registered_courses:
-                print(c)
+            if not student.registered_courses:
+                print("No courses registered.")
+            else:
+                for c in student.registered_courses:
+                    print(c)
             print(f"Total Credits: {student.total_credits()}")
 
         elif choice == "4":
-            print("Exiting...")
+            print("Thanks for using...")
             break
 
         else:
