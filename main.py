@@ -1,4 +1,6 @@
 import csv
+from registration_system import RegistrationSystem
+
 
 # Course Class
 class Course:
@@ -96,6 +98,16 @@ class RegistrationSystem:
         if self.can_register(student, course):
             student.registered_courses.append(course)
             print(f"Registered: {course.title}")
+    def recommend_courses(self, student):
+        recommendations = []
+        for course in self.courses.values():
+            if course.code in student.completed_courses:
+                continue
+            if course in student.registered_courses:
+                continue
+            if course.prerequisite == "none" or course.prerequisite in student.completed_courses:
+                recommendations.append(course)
+        return recommendations
 
 
 # Main Program
@@ -109,6 +121,7 @@ def main():
         print("2. Register Course")
         print("3. View Registered Courses")
         print("4. Exit")
+        print("5. Recommend Courses")
 
         choice = input("Enter choice: ").strip()
 
@@ -131,9 +144,16 @@ def main():
         elif choice == "4":
             print("Thanks for using...")
             break
-
+        elif choice == "5":
+            recs = system.recommend_courses(student)
+            print("\nRecommended Courses:")
+            if not recs:
+                print("No available recommendations.")
         else:
-            print("Invalid choice.")
+            for c in recs:
+                print(c)
+            else:
+                print("Invalid choice.")
 
 
 if __name__ == "__main__":
